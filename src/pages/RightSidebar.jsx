@@ -4,7 +4,6 @@ import { FaVideo, FaSearch, FaEllipsisH } from "react-icons/fa";
 const RightSidebar = () => {
   return (
     <div className="hidden lg:flex flex-col w-[300px] h-screen bg-white p-4 shadow-md overflow-y-auto">
-      {/* Contacts Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Contacts</h2>
         <div className="flex items-center gap-x-2 text-gray-600">
@@ -14,7 +13,6 @@ const RightSidebar = () => {
         </div>
       </div>
 
-      {/* Online Friends List */}
       <div className="flex flex-col gap-y-3">
         <Contact name="John Doe" img="https://i.pravatar.cc/40?img=1" online />
         <Contact name="Sarah Smith" img="https://i.pravatar.cc/40?img=2" online />
@@ -27,7 +25,6 @@ const RightSidebar = () => {
   );
 };
 
-// Contact Component
 const Contact = ({ name, img, online }) => {
   return (
     <div className="flex items-center gap-x-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">

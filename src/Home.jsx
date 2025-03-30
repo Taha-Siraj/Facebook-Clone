@@ -3,7 +3,6 @@ import { FaRegThumbsUp, FaRegComment } from "react-icons/fa";
 import { RiVideoAddFill } from "react-icons/ri";
 import { MdPhotoLibrary } from "react-icons/md";
 
-// Stories Data (Pakistani Users)
 const storiesData = [
   { id: 1, name: "Ali Khan", img: "https://randomuser.me/api/portraits/men/15.jpg" },
   { id: 2, name: "Ayesha Siddiqui", img: "https://randomuser.me/api/portraits/women/25.jpg" },
@@ -57,7 +56,6 @@ const postsData = [
 const Home = () => {
   return (
     <div className="flex-1 max-w-[600px] mx-auto h-screen overflow-y-auto scrollbar-hide">
-      {/* Stories Section */}
       <div className="flex gap-x-3 p-4 overflow-x-auto">
         {storiesData.map((story) => (
           <div
@@ -69,7 +67,6 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Create Post Box */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-x-3">
           <img src="https://i.pravatar.cc/40" alt="User" className="w-10 h-10 rounded-full" />
@@ -89,11 +86,9 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Posts Section */}
       <div className="mt-4">
         {postsData.map((post) => (
           <div key={post.id} className="bg-white p-4 rounded-lg shadow-md mb-4">
-            {/* Post Header */}
             <div className="flex items-center gap-x-3">
               <img src={post.userImg} alt={post.user} className="w-10 h-10 rounded-full" />
               <div>
@@ -102,11 +97,9 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Post Content */}
             <p className="mt-2 text-gray-800">{post.text}</p>
             <img src={post.postImg} alt="Post" className="w-full mt-2 rounded-lg" />
 
-            {/* Post Actions */}
             <div className="flex justify-between items-center text-gray-600 mt-2">
               <button className="flex items-center gap-x-1">
                 <FaRegThumbsUp /> {post.likes}
