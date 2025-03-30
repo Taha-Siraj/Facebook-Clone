@@ -3,11 +3,12 @@ import Header from "./pages/Header";
 import LeftSidebar from "./pages/LeftSideBar";
 import RightSidebar from "./pages/RightSidebar";
 import Home from "./Home";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
     <div className="h-screen flex flex-col">
-      <div className="sticky top-0 left-0 w-full bg-white z-50 shadow-md">
+      {/* <div className="sticky top-0 left-0 w-full bg-white z-50 shadow-md">
         <Header />
       </div>
       <div className="flex flex-1 overflow-hidden">
@@ -16,7 +17,8 @@ const App = () => {
           <Home />
         </div>
         <RightSidebar />
-      </div>
+      </div> */}
+      <Login/>
     </div>
   );
 };

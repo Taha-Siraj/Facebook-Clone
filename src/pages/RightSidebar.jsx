@@ -12,7 +12,6 @@ const RightSidebar = () => {
           <FaEllipsisH className="cursor-pointer" />
         </div>
       </div>
-
       <div className="flex flex-col gap-y-3">
         <Contact name="John Doe" img="https://i.pravatar.cc/40?img=1" online />
         <Contact name="Sarah Smith" img="https://i.pravatar.cc/40?img=2" online />
@@ -24,7 +23,6 @@ const RightSidebar = () => {
     </div>
   );
 };
-
 const Contact = ({ name, img, online }) => {
   return (
     <div className="flex items-center gap-x-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
@@ -36,5 +34,4 @@ const Contact = ({ name, img, online }) => {
     </div>
   );
 };
-
 export default RightSidebar;
