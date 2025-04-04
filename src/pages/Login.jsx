@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 const Login = () => {
     const [isshow , setIsShow] = useState(false);
     const [email , setEmail] = useState("");
@@ -24,16 +25,15 @@ const Login = () => {
           });
       }
     }
-
     useGSAP(() => {
        let tl = gsap.timeline()
      tl.from("#text", {
-        y: -400,
+        scale: 1.5,
         opacity: 0,
         duration: 1,
     })
     tl.from("#box", {
-        y: -400,
+        scale: 1.5,
         opacity: 0,
         duration: 1,
     })
@@ -82,7 +82,7 @@ const Login = () => {
             <button  className='w-full  px-4 bg-[#0866FF] text-white font-semibold rounded-md py-3 text-xl' onClick={loginForm} >Login</button>
             <a href="" className='text-[#0866FF]'>Forgot Password?</a>
             <hr className='w-full  text-black' />
-            <button  className=' px-4 bg-[#42B72A] text-white font-semibold rounded-md py-3 text-xl'>Create new account</button>
+            <button  className=' px-4 bg-[#42B72A] text-white font-semibold rounded-md py-3 text-xl'> <Link to="/Signup"> Create new account</Link> </button>
         </div>
       </div>
     </div>
