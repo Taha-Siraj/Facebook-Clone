@@ -2,117 +2,99 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { GlobalContext } from './context/Context';
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, updateProfile   } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ClipLoader } from "react-spinners";
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
 const Signup = () => {
-  const {state, dispatch} = useContext(GlobalContext);
-  const [firstName , setfirstName ] = useState("");
-  const [LastName , setLastName ] = useState("");
-  const [email , setEmail] = useState("");
-  const [password , setpassword] = useState("");
-  const [photo , setPhoto] = useState(null);
-  const [photoURL , setphotoURL ] = useState();
-  const navigate = useNavigate()
-  console.log("states",state)
-  const handlePhotoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file); 
-      setPhoto(file); 
-      setphotoURL(fileURL);
-    }
-  }
+  const { state, dispatch } = useContext(GlobalContext);
+  const [firstName, setfirstName] = useState("");
+  const [LastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setpassword] = useState("");
+  const [dOB, setDateofBirth] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const createUsers = () => {
-    if(!firstName || !LastName || !email || !password){
-       toast.warn('Fill the input field !', {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-        });
-      return;
-    }
-    else if(!photoURL){
-      toast.warn('Select The Profile Photo!', {
+    if (!firstName || !LastName || !email || !password) {
+      toast.warn('Fill the input field!', {
         position: "top-right",
         autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "light",
         transition: Bounce,
       });
       return;
     }
+
     const auth = getAuth();
+    setLoading(true);
+
     createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    const user = userCredential.user;
-    console.log("users", user)
-    setphotoURL(user.photoURL)
-    updateProfile(auth.currentUser, {
-    displayName: `${firstName} ${LastName}`,
-    photoURL: photo ? String(photo) : null,
-    }).then(() => {
-      console.log("updated profile")
-    }).catch((error) => {
-      console.log("profile error",error);
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        updateProfile(auth.currentUser, {
+          displayName: `${firstName} ${LastName}`,
+          phoneNumber: dOB,
+          photoURL: "https://rb.gy/ddnepk"
+        }).then(async () => {
+          // ✅ Force refresh user info
+          await auth.currentUser.reload();
+          const updatedUser = getAuth().currentUser;
+
+          
+          toast.success('Account created successfully!', {
+            position: "top-right",
+            autoClose: 1000,
+            theme: "light",
+            transition: Bounce,
+          });
+          
+          // Clear fields
+          dispatch({ type: "USER_LOGIN", payload: user  });
+          setfirstName("");
+          setLastName("");
+          setEmail("");
+          setpassword("");
+          setLoading(false);
+          navigate("/"); // ✅ Go to homepage after successful signup
+          console.log("state",state);
+        }).catch((error) => {
+          console.log("profile error", error);
+          setLoading(false);
+        });
+      })
+      .catch((error) => {
+        console.log("error", error.message);
+        setfirstName("");
+        setLastName("");
+        setEmail("");
+        setpassword("");
+        setLoading(false);
+      });
+  };
+
+  useGSAP(() => {
+    let tl = gsap.timeline();
+    tl.from("#text", {
+      scale: 1.5,
+      opacity: 0,
+      delay: 0.5,
+      duration: 1,
+    }).from("#boxes", {
+      scale: 1.5,
+      opacity: 0,
+      duration: 1,
     });
-    setfirstName("");
-    setLastName("");
-    setEmail("");
-    setpassword("");
-    setPhoto(null);
-    setphotoURL(null);
-    dispatch({type: "USER_LOGIN", payload: {user}});
-    toast.success('Fill the input field !', {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-    navigate("/login")  
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log("error", error ,errorMessage);
-    firstName("");
-    LastName("");
-    email("");
-    password("");
-    photo("")
   });
-  }
+
   return (
     <div className='bg-[#F0F2F5] min-h-[120vh] flex flex-col justify-center items-center'>
-       <ToastContainer
-      position="top-right"x
-      autoClose={1000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick={false}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-      transition={Bounce}
-      />
-      <h1 className='text-6xl text-blue-600 font-bold mb-4'>facebook</h1>
-      <div className='bg-white p-6 rounded-lg shadow-md w-[450px]'>
+      <ToastContainer />
+      <h1 id='text' className='text-6xl text-blue-600 font-bold mb-4'>facebook</h1>
+      <div id='boxes' className='bg-white p-6 rounded-lg shadow-md w-[450px]'>
         <h2 className='text-2xl font-semibold text-center'>Create a new account</h2>
         <p className='text-center text-gray-600'>It's quick and easy.</p>
         <hr className='my-4' />
@@ -123,23 +105,17 @@ const Signup = () => {
           </div>
           <input value={email} type='email' placeholder='Email or Phone' onChange={(e) => setEmail(e.target.value)} className='p-2 border border-gray-300 rounded-md w-full' />
           <input
-           value={password}
-           onChange={(e) => setpassword(e.target.value)}  
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
             type='password' placeholder='New Password' className='p-2 border border-gray-300 rounded-md w-full' />
           <div>
             <label className='text-gray-700'>Date of birth</label>
-            <input type='date'className='w-full p-2 border border-gray-300 rounded-md' />
+            <input onChange={(e) => setDateofBirth(e.target.value)} type='date' className='w-full p-2 border border-gray-300 rounded-md' />
           </div>
-          <div>
-            <label className='text-gray-700'>Select Your photo</label>
-            <input onChange={handlePhotoUpload} type='file'className=' w-full p-2 border border-gray-300 rounded-md' />
-          </div>
-          <img 
-            src={photoURL} 
-            className={`h-[100px] object-top w-[100px] ${!photoURL ? "hidden": "visible"} rounded-full object-cover mx-auto`} 
-          />
-          <button onClick={createUsers} className='bg-green-600 text-white py-2 rounded-md font-semibold mt-2 hover:bg-green-700'>Sign Up</button>
-          <p><Link  className='text-[#1877F4] font-mono' to="/login">Already have an account?</Link></p>
+          <button onClick={createUsers} className='bg-green-600 text-white py-2 rounded-md font-semibold mt-2 hover:bg-green-700'>
+            {loading ? <ClipLoader size={20} color="#fff" /> : "Sign Up"}
+          </button>
+          <p><Link className='text-[#1877F4] font-mono' to="/login">Already have an account?</Link></p>
         </div>
       </div>
     </div>
