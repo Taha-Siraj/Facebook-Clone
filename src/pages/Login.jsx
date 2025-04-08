@@ -5,8 +5,8 @@ import { useGSAP } from '@gsap/react';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { ClipLoader } from "react-spinners";
 import { GlobalContext } from './context/Context';
+import { OrbitProgress } from 'react-loading-indicators';
 const Login = () => {
   const {state, dispatch} = useContext(GlobalContext);
     const [isshow , setIsShow] = useState(false);
@@ -114,7 +114,18 @@ const Login = () => {
            {(!password) ? null
            :<span className='text-[23px] absolute cursor-pointer top-[100px] right-7' onClick={() => setIsShow((prev) => !prev)} > {isshow ? <BiShow/>  : <BiHide/>} </span>  }
 
-            <button   className='w-full  px-4 bg-[#0866FF] text-white font-semibold rounded-md py-3 text-xl' onClick={loginForm} > { loading ? <ClipLoader/> : "Login" } </button>
+          <button
+            className="w-full px-4 bg-[#0866FF] text-white font-semibold rounded-md py-3 text-xl flex items-center justify-center"
+            onClick={loginForm}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center h-6">
+                <OrbitProgress color="#ffffff" size="small" text="" textColor="" />
+              </div>
+            ) : (
+              "Login"
+            )}
+          </button>
             <a href="" className='text-[#0866FF]'>Forgot Password?</a>
             <hr className='w-full  text-black' />
             <button  className=' px-4 bg-[#42B72A] text-white font-semibold rounded-md py-3 text-xl'> <Link to="/signup"> Create new account</Link> </button>
