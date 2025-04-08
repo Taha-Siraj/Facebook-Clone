@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaRegThumbsUp, FaRegComment, FaShare } from "react-icons/fa";
 import { RiVideoAddFill } from "react-icons/ri";
 import { MdPhotoLibrary } from "react-icons/md";
+import { GlobalContext } from "./pages/context/Context";
 
 const storiesData = [
   { id: 1, name: "Ali Khan", img: "https://randomuser.me/api/portraits/men/15.jpg" },
@@ -70,12 +71,12 @@ const StoryCard = ({ story }) => (
 const PostCard = ({ post }) => {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
-
+  
   const handleLike = () => {
     setLikes(prev => isLiked ? prev - 1 : prev + 1);
     setIsLiked(!isLiked);
   };
-
+  
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mb-4 transition-all hover:shadow-lg">
       <div className="flex items-center gap-x-3">
@@ -120,10 +121,10 @@ const PostCard = ({ post }) => {
 
 const Home = () => {
   const [postText, setPostText] = useState("");
+  const {state, dipatch} = useContext(GlobalContext);
 
   return (
     <div className="flex-1 max-w-2xl mx-auto py-4 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
-      {/* Stories Section */}
       <div className="bg-white p-4 rounded-lg shadow-md mx-4">
         <div className="flex gap-x-3 overflow-x-auto pb-2">
           {storiesData.map((story) => (
@@ -136,7 +137,7 @@ const Home = () => {
       <div className="bg-white p-4 rounded-lg shadow-md mt-4 mx-4">
         <div className="flex items-center gap-x-3">
           <img 
-            src="https://i.pravatar.cc/40" 
+            src={state?.user?.photoURL} 
             alt="Current user"
             className="w-10 h-10 rounded-full object-cover"
           />

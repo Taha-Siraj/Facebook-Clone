@@ -70,7 +70,6 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Middle Section */}
         <div className='flex items-center justify-center gap-x-2 text-3xl'>
           <span className='text-[#606366] hover:bg-[#F2F2F2] py-2 px-8 rounded-lg cursor-pointer hover:text-blue-600'>
             <GoHomeFill />
@@ -89,7 +88,6 @@ const Header = () => {
           </span>
         </div>
 
-        {/* Right Section */}
         <div className='relative flex items-center justify-center gap-x-3'>
           <span className='bg-[#E2E5E9] rounded-full py-2 px-2 text-3xl hover:text-blue-600 cursor-pointer'>
             <CgMenuGridR />

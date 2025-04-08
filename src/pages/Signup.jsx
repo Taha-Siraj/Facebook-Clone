@@ -37,30 +37,38 @@ const Signup = () => {
 
         updateProfile(auth.currentUser, {
           displayName: `${firstName} ${LastName}`,
-          phoneNumber: dOB,
           photoURL: "https://rb.gy/ddnepk"
         }).then(async () => {
-          // ✅ Force refresh user info
           await auth.currentUser.reload();
           const updatedUser = getAuth().currentUser;
 
-          
+          dispatch({
+            type: "USER_LOGIN",
+            payload: {
+              isLogin: true,
+              user: {
+                name: `${firstName} ${LastName}`,
+                email: updatedUser.email,
+                uid: updatedUser.uid,
+                photoURL: updatedUser.photoURL,
+                dOB: dOB
+              }
+            }
+          });
+
           toast.success('Account created successfully!', {
             position: "top-right",
             autoClose: 1000,
             theme: "light",
             transition: Bounce,
           });
-          
-          // Clear fields
-          dispatch({ type: "USER_LOGIN", payload: user  });
+
           setfirstName("");
           setLastName("");
           setEmail("");
           setpassword("");
           setLoading(false);
-          navigate("/"); // ✅ Go to homepage after successful signup
-          console.log("state",state);
+          navigate("/");
         }).catch((error) => {
           console.log("profile error", error);
           setLoading(false);
